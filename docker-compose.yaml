@@ -1,0 +1,12 @@
+services:
+  ubuntu:
+    build:
+      context: .
+      dockerfile: Dockerfile.ubuntu
+    container_name: ubuntu
+    hostname: ubuntu
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./zsh-install.sh:/root/zsh-install.sh
+      - .ubuntu:/root

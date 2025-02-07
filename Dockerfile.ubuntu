@@ -1,0 +1,7 @@
+FROM ubuntu:24.10
+
+RUN apt-get update && apt-get install -y sudo
+
+COPY ./zsh-install.sh ./zsh-install.sh
+
+RUN chmod +x ./zsh-install.sh
