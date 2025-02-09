@@ -1,0 +1,1 @@
+pyinstaller --onefile cli.py --name arch-installer
