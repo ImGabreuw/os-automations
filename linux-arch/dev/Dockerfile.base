@@ -1,0 +1,62 @@
+# Use a base image do Arch Linux
+FROM archlinux:latest
+
+# Atualize o sistema e instale dependências essenciais como root
+RUN pacman -Syu --noconfirm \
+    && pacman -S --noconfirm \
+       curl \
+       git \
+       base-devel \
+       sudo \
+       wget \
+       unzip \
+       fontconfig 
+
+# Configura um usuário não root chamado "arch"
+RUN useradd -m -s /bin/bash arch \
+    && echo "arch ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+USER arch
+WORKDIR /home/arch
+
+# Instalação do Paru para gerenciar pacotes AUR
+RUN git clone https://aur.archlinux.org/paru.git \
+    && cd paru \
+    && makepkg -si --noconfirm \
+    && cd .. \
+    && rm -rf paru
+
+# Instalação do Zsh como usuário arch usando sudo
+RUN sudo paru -S --noconfirm zsh zsh-completions
+
+# Instalação do Oh My Zsh
+RUN paru -S --noconfirm oh-my-zsh-git
+
+# Copia o arquivo .zshrc para o diretório do usuário
+COPY config/.zshrc .zshrc
+
+# Defina o Zsh como o shell padrão para o usuário arch
+RUN sudo chsh -s /usr/bin/zsh arch
+
+# Instalação das Nerd Fonts (JetBrainsMono e MesloLGS)
+RUN mkdir -p ~/.local/share/fonts \
+    # Instalação da JetBrainsMono Nerd Font
+    && wget -O JetBrainsMono.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip \
+    && unzip -o JetBrainsMono.zip -d ~/.local/share/fonts \
+    && rm JetBrainsMono.zip \
+    # Instalação da MesloLGS Nerd Font
+    && wget -O MesloLGS.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Meslo.zip \
+    && unzip -o MesloLGS.zip -d ~/.local/share/fonts \
+    && rm MesloLGS.zip \
+    && fc-cache -fv
+
+# Instalação do tema Powerlevel10k
+RUN paru -S --noconfirm zsh-theme-powerlevel10k-git
+COPY config/.p10k.zsh .p10k.zsh
+
+# Instalação do NvChad
+RUN sudo paru -S --noconfirm neovim ripgrep \
+    && git clone https://github.com/NvChad/starter ~/.config/nvim
+
+# Comando para inicializar o Zsh
+CMD ["zsh"]
