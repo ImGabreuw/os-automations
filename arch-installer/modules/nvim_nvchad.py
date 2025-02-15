@@ -41,7 +41,7 @@ class NvChadInstaller(BaseInstaller):
         try:
             dirs = [self.INSTALL_DIR, "~/.local/state/nvim", "~/.local/share/nvim"]
 
-            for path in paths:
+            for path in dirs:
                 full_path = os.path.expanduser(path)
 
                 if os.path.exists(full_path):

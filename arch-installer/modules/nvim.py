@@ -14,7 +14,7 @@ class NvimInstaller(BaseInstaller):
     /usr/local/bin: contém executáveis instalados pelo administrador do sistema que não fazem parte do sistema operacional base.
     Referência: https://news.ycombinator.com/item?id=5944334
     """
-    SYMLINK_PATH = "/usr/local/bin/nvim-linux-x86_64"
+    SYMLINK_PATH = "/usr/local/bin/nvim"
 
     """
     Tutorial de instalação: https://github.com/neovim/neovim/blob/master/INSTALL.md#install-from-package
