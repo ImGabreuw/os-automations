@@ -7,6 +7,7 @@ from modules.filezilla import FilezillaInstaller
 from modules.tomcat import TomcatInstaller
 from modules.wine import WineInstaller
 from modules.postman import PostmanInstaller      
+from modules.nvim import NvimInstaller      
 
 def main():
     parser = argparse.ArgumentParser(
@@ -15,7 +16,7 @@ def main():
     parser.add_argument(
         "-p", "--program",
         required=True,
-        choices=["chrome", "jetbrains", "filezilla", "tomcat", "wine", "postman"],
+        choices=["chrome", "jetbrains", "filezilla", "tomcat", "wine", "postman", "nvim"],
         help="Programa a ser gerenciado"
     )
     parser.add_argument(
@@ -46,7 +47,8 @@ def main():
         "filezilla": FilezillaInstaller,
         "tomcat": TomcatInstaller,
         "wine": WineInstaller,
-        "postman": PostmanInstaller
+        "postman": PostmanInstaller,
+        "nvim": NvimInstaller
     }
 
     installer_class = installers.get(args.program)
