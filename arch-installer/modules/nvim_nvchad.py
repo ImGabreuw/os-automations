@@ -12,7 +12,7 @@ class NvChadInstaller(BaseInstaller):
 
     DEPENDENCIES = ["ripgrep"]
 
-    DOWNLOAD_URL = "https://github.com/NvChad/starter"
+    DOWNLOAD_URL = "git@github.com:NvChad/starter.git"
 
     def install(self):
         self.logger.info("Instalando NvChad...")
@@ -45,7 +45,7 @@ class NvChadInstaller(BaseInstaller):
                 full_path = os.path.expanduser(path)
 
                 if os.path.exists(full_path):
-                    subprocess.run(["rm", "-rf", full_path], check=True)
+                    subprocess.run(["sudo", "rm", "-rf", full_path], check=True)
                     self.logger.debug("Diretório de instalação %s removido.", full_path)
         except subprocess.CalledProcessError as e:
             self.logger.error("Erro ao desinstalar NvChad: %s", e)
