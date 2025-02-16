@@ -1,0 +1,26 @@
+##[pylyzer] failed /home/geron/Projects/os-automations/arch-installer/modules/nvim.py 1739631374 3721
+.subprocess: Never
+
+.os: Never
+
+.requests = pyimport "__init__"
+.__init__ = pyimport "__init__"
+
+.json: Never
+
+.re: Never
+
+.___v_desugar_1: Never
+.BaseInstaller: Never
+.___v_desugar_2: Never
+.PACKAGE_MANAGER: Never
+.NvimInstaller: ClassType
+.NvimInstaller <: Never
+.NvimInstaller.INSTALL_DIR: {".opt.nvim-linux-x86_64"}
+.NvimInstaller.SYMLINK_PATH: {".usr.local.bin.nvim"}
+.NvimInstaller.DOWNLOAD_URL: {"https:..github.com.neovim.neovim.releases.latest.download.nvim-linux-x86_64.tar.gz"}
+.NvimInstaller.TEMP_TAR: {".tmp.nvim-linux-x86_64.tar.gz"}
+.NvimInstaller.install: (self: modules.nvim.NvimInstaller) -> Never
+.NvimInstaller.update: (self: modules.nvim.NvimInstaller) -> NoneType
+.NvimInstaller.uninstall: (self: modules.nvim.NvimInstaller) -> NoneType
+

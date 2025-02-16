@@ -1,0 +1,16 @@
+##[pylyzer] failed /home/geron/Projects/os-automations/arch-installer/modules/tomcat.py 1739112186 1947
+.subprocess: Never
+
+.os: Never
+
+.___v_desugar_1: Never
+.BaseInstaller: Never
+.___v_desugar_2: Never
+.PACKAGE_MANAGER: Never
+.TomcatInstaller: ClassType
+.TomcatInstaller <: Never
+.TomcatInstaller.AVAILABLE_VERSIONS: Never
+.TomcatInstaller.install: (self: modules.tomcat.TomcatInstaller) -> Never
+.TomcatInstaller.update: (self: modules.tomcat.TomcatInstaller) -> NoneType
+.TomcatInstaller.uninstall: (self: modules.tomcat.TomcatInstaller) -> NoneType
+

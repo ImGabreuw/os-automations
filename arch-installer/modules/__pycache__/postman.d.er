@@ -1,0 +1,19 @@
+##[pylyzer] failed /home/geron/Projects/os-automations/arch-installer/modules/postman.py 1739113933 3039
+.subprocess: Never
+
+.os: Never
+
+.___v_desugar_1: Never
+.BaseInstaller: Never
+.___v_desugar_2: Never
+.PACKAGE_MANAGER: Never
+.PostmanInstaller: ClassType
+.PostmanInstaller <: Never
+.PostmanInstaller.INSTALL_DIR: {".opt.Postman"}
+.PostmanInstaller.SYMLINK_PATH: {".usr.local.bin.postman"}
+.PostmanInstaller.DOWNLOAD_URL: {"https:..dl.pstmn.io.download.latest.linux64"}
+.PostmanInstaller.TEMP_TAR: {".tmp.postman.tar.gz"}
+.PostmanInstaller.install: (self: modules.postman.PostmanInstaller) -> NoneType
+.PostmanInstaller.update: (self: modules.postman.PostmanInstaller) -> NoneType
+.PostmanInstaller.uninstall: (self: modules.postman.PostmanInstaller) -> NoneType
+

@@ -1,0 +1,15 @@
+##[pylyzer] failed /home/geron/Projects/os-automations/arch-installer/base_installer.py 1739111442 970
+.abc: Never
+
+.logging: Never
+
+.BaseInstaller: ClassType
+.BaseInstaller <: Never
+.BaseInstaller.debug: Never
+.BaseInstaller.version: Never
+.BaseInstaller.logger: Never
+.BaseInstaller.__call__: (debug: Obj := Obj, version: Obj := Obj) -> base_installer.BaseInstaller
+.BaseInstaller.install: (self: base_installer.BaseInstaller) -> NoneType
+.BaseInstaller.update: (self: base_installer.BaseInstaller) -> NoneType
+.BaseInstaller.uninstall: (self: base_installer.BaseInstaller) -> NoneType
+

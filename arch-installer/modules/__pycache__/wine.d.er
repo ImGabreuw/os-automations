@@ -1,0 +1,14 @@
+##[pylyzer] failed /home/geron/Projects/os-automations/arch-installer/modules/wine.py 1739112300 2041
+.subprocess: Never
+
+.___v_desugar_1: Never
+.BaseInstaller: Never
+.___v_desugar_2: Never
+.PACKAGE_MANAGER: Never
+.WineInstaller: ClassType
+.WineInstaller <: Never
+.WineInstaller.DEPENDENCIES: Never
+.WineInstaller.install: (self: modules.wine.WineInstaller) -> NoneType
+.WineInstaller.update: (self: modules.wine.WineInstaller) -> NoneType
+.WineInstaller.uninstall: (self: modules.wine.WineInstaller) -> NoneType
+

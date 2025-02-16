@@ -1,0 +1,25 @@
+##[pylyzer] failed /home/geron/Projects/os-automations/arch-installer/modules/nvim_nvchad.py 1739631187 1891
+.subprocess: Never
+
+.os: Never
+
+.requests = pyimport "__init__"
+.__init__ = pyimport "__init__"
+
+.json: Never
+
+.re: Never
+
+.___v_desugar_1: Never
+.BaseInstaller: Never
+.___v_desugar_2: Never
+.PACKAGE_MANAGER: Never
+.NvChadInstaller: ClassType
+.NvChadInstaller <: Never
+.NvChadInstaller.INSTALL_DIR: {"~..config.nvim"}
+.NvChadInstaller.DEPENDENCIES: Never
+.NvChadInstaller.DOWNLOAD_URL: {"git@github.com:NvChad.starter.git"}
+.NvChadInstaller.install: (self: modules.nvim_nvchad.NvChadInstaller) -> Never
+.NvChadInstaller.update: (self: modules.nvim_nvchad.NvChadInstaller) -> NoneType
+.NvChadInstaller.uninstall: (self: modules.nvim_nvchad.NvChadInstaller) -> NoneType
+

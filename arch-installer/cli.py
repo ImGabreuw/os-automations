@@ -2,13 +2,14 @@ import argparse
 import logging
 
 from modules.chrome import ChromeInstaller
-from modules.jetbrains import JetbrainsInstaller  
-from modules.filezilla import FilezillaInstaller  
+from modules.jetbrains import JetbrainsInstaller
+from modules.filezilla import FilezillaInstaller
 from modules.tomcat import TomcatInstaller
 from modules.wine import WineInstaller
-from modules.postman import PostmanInstaller      
-from modules.nvim import NvimInstaller      
-from modules.nvim_nvchad import NvChadInstaller      
+from modules.postman import PostmanInstaller
+from modules.nvim import NvimInstaller
+from modules.nvim_nvchad import NvChadInstaller
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -17,7 +18,8 @@ def main():
     parser.add_argument(
         "-p", "--program",
         required=True,
-        choices=["chrome", "jetbrains", "filezilla", "tomcat", "wine", "postman", "nvim", "nvchad"],
+        choices=["chrome", "jetbrains", "filezilla",
+                 "tomcat", "wine", "postman", "nvim", "nvchad"],
         help="Programa a ser gerenciado"
     )
     parser.add_argument(
@@ -68,6 +70,7 @@ def main():
         installer.uninstall()
     else:
         print("Ação inválida.")
+
 
 if __name__ == "__main__":
     main()
