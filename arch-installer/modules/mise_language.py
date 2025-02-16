@@ -10,7 +10,7 @@ class LanguageInstaller(BaseInstaller):
         super().__init__(*args, **kwargs)
         self.mise_installer = MiseInstaller()
     
-    def is_installed(self, language, version):
+    def is_installed(self, language, version = None):
         """
         Verifica se a linguagem e a versão especificada já estão instaladas.
         Utiliza o comando 'mise list --global' para obter as linguagens instaladas e
@@ -33,10 +33,10 @@ class LanguageInstaller(BaseInstaller):
             if version:
                 lines = result.stdout.splitlines()
                 for line in lines:
-                    if f"{language}" in line and f"{version}" in line:
+                    if f"{language}" in line and version and f"{version}" in line:
                         installed  = True
                         break
-                    installed  = False
+                installed  = False
             else:
                 installed = f"{language}" in result.stdout
         
