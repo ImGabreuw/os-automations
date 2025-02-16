@@ -32,8 +32,12 @@ class AstroVimInstaller(BaseInstaller):
             self.logger.info("Instalando dependências ...")
 
             self.nvim_installer.install()
-            self.mise_language_installer.install("node", "22.14.0") # Lastest LTS
-            self.mise_language_installer.install("python", "3.13.2") # Lastest stable version
+
+            if not self.mise_language_installer.is_installed("node"):
+                self.mise_language_installer.install("node", "22.14.0") # Lastest LTS
+
+            if not self.mise_language_installer.is_installed("python"):
+                self.mise_language_installer.install("python", "3.13.2") # Lastest stable version
 
             subprocess.run(
                 [PACKAGE_MANAGER, "-Sy", "--needed"] + self.DEPENDENCIES + ["--noconfirm"],
@@ -88,8 +92,11 @@ class AstroVimInstaller(BaseInstaller):
         try:
             self.nvim_installer.uninstall()
 
-            self.mise_language_installer.uninstall("node", "22.14.0") # Lastest LTS
-            self.mise_language_installer.uninstall("python", "3.13.2") # Lastest stable version
+            if self.mise_language_installer.is_installed("node", "22.14.0"):
+                self.mise_language_installer.uninstall("node", "22.14.0") # Lastest LTS
+
+            if self.mise_language_installer.is_installed("python", "3.13.2"):
+                self.mise_language_installer.uninstall("python", "3.13.2") # Lastest stable version
 
             self.gdu_installer.uninstall()
 

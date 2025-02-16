@@ -42,7 +42,8 @@ class NvimInstaller(BaseInstaller):
                 return
 
             if not os.path.exists(self.INSTALL_DIR):
-                os.makedirs(self.INSTALL_DIR, exist_ok=True, mode=0o755)
+                subprocess.run(["sudo", "mkdir", "-p", self.INSTALL_DIR], check=True)
+                subprocess.run(["sudo", "chown", os.getlogin(), self.INSTALL_DIR], check=True)
                 self.logger.debug("Diretório %s criado.", self.INSTALL_DIR)
             
             # --strip-components=1 remove o primeiro nível do caminho dos arquivos extraídos.
@@ -53,7 +54,7 @@ class NvimInstaller(BaseInstaller):
             # Após a extração o executável estará em INSTALL_DIR/bin/nvim.
             executable_path = os.path.join(self.INSTALL_DIR, "bin", "nvim")
             if os.path.exists(executable_path):
-                subprocess.run(["ln", "-sf", executable_path, self.SYMLINK_PATH], check=True)
+                subprocess.run(["sudo", "ln", "-sf", executable_path, self.SYMLINK_PATH], check=True)
                 self.logger.debug("Symlink criado: %s -> %s", self.SYMLINK_PATH, executable_path)
             else:
                 self.logger.warning("Executável Nvim não encontrado em %s", executable_path)
