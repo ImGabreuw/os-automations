@@ -25,6 +25,9 @@ class GduInstaller(BaseInstaller):
             self.logger.error("Erro ao instalar GDU: %s", e)
             raise
 
+    def update(self):
+        self.logger.info("Atualização não suportada para GDU.")
+
     def uninstall(self):
         """Desinstala o GDU, se estiver instalado."""
         if not self.is_installed():
