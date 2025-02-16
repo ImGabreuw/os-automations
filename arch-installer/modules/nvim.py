@@ -3,6 +3,7 @@ import os
 import requests
 import json
 import re
+import shutil
 
 from base_installer import BaseInstaller
 from config import PACKAGE_MANAGER
@@ -22,6 +23,9 @@ class NvimInstaller(BaseInstaller):
     DOWNLOAD_URL = "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz"
 
     TEMP_TAR = "/tmp/nvim-linux-x86_64.tar.gz"
+
+    def is_installed(self):
+        return shutil.which("nvim")
 
     def install(self):
         self.logger.info("Instalando Nvim...")

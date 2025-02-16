@@ -1,11 +1,21 @@
 import subprocess
 import os
+import shutil
+
 from base_installer import BaseInstaller
 
 class MiseInstaller(BaseInstaller):
 
+    def is_installed(self):
+        return shutil.which("mise")
+
     def install(self):
         self.logger.info("Instalando Mise CLI...")
+
+        if self.is_installed():
+            self.logger.info("Mise CLI já está instalado.")
+            return
+
         try:
             subprocess.run("curl https://mise.run | sh", shell=True, check=True)
             
@@ -96,6 +106,11 @@ class MiseInstaller(BaseInstaller):
 
     def uninstall(self):
         self.logger.info("Desinstalando Mise...")
+
+        if not self.is_installed():
+            self.logger.info("Mise CLI nnão está instalado.")
+            return
+
         try:
             mise_path = os.path.expanduser("~/.local/bin/mise")
             if os.path.exists(mise_path):

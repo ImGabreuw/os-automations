@@ -5,7 +5,4 @@ RUN pacman -Sy --noconfirm git curl tar base-devel && \
 
 WORKDIR /app
 
-# COPY ./dist/arch-installer ./arch-installer
-# RUN chmod +x ./arch-installer
-
 ENTRYPOINT ["tail", "-f", "/dev/null"]

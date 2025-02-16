@@ -6,19 +6,34 @@ import re
 import shutil
 
 from base_installer import BaseInstaller
+from modules.nvim import NvimInstaller
+from modules.mise_language import LanguageInstaller
 from config import PACKAGE_MANAGER
 
 class AstroVimInstaller(BaseInstaller):
     INSTALL_DIR = "~/.config/nvim"
 
-    DEPENDENCIES = ["ripgrep", "lazygit", "python", "nodejs", "bottom"]
+    DEPENDENCIES = ["ripgrep", "lazygit", "bottom"]
 
     DOWNLOAD_URL = "https://github.com/AstroNvim/template.git"
 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.nvim_installer = NvimInstaller()
+        self.mise_language_installer = LanguageInstaller()
+
     def install(self):
-        self.logger.info("Iniciando a instalação do AstroVim e dos pré-requisitos opcionais...")
+        self.logger.info("Iniciando a instalação do AstroVim...")
         try:
-            self.logger.info("Instalando dependências: %s", ", ".join(self.DEPENDENCIES))
+            self.logger.info("Instalando dependências ...")
+
+            if not self.nvim_installer.is_installed():
+                self.nvim_installer.install()
+
+            self.mise_language_installer.install("node", "22.14.0") # Lastest LTS
+            self.mise_language_installer.install("python", "3.13.2") # Lastest stable version
+
             subprocess.run(
                 [PACKAGE_MANAGER, "-Sy", "--needed"] + self.DEPENDENCIES + ["--noconfirm"],
                 check=True

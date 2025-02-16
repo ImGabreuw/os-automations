@@ -54,7 +54,7 @@ def main():
         "postman": PostmanInstaller,
         "nvim": NvimInstaller,
         "nvchad": NvChadInstaller,
-        "astrovim": AstroVimInstaller,
+        "astrovim": AstroVimInstaller
     }
 
     installer_class = installers.get(args.program)
