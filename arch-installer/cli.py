@@ -9,6 +9,7 @@ from modules.wine import WineInstaller
 from modules.postman import PostmanInstaller
 from modules.nvim import NvimInstaller
 from modules.nvim_nvchad import NvChadInstaller
+from modules.nvim_astrovim import AstroVimInstaller
 
 
 def main():
@@ -19,7 +20,7 @@ def main():
         "-p", "--program",
         required=True,
         choices=["chrome", "jetbrains", "filezilla",
-                 "tomcat", "wine", "postman", "nvim", "nvchad"],
+                 "tomcat", "wine", "postman", "nvim", "nvchad", "astrovim"],
         help="Programa a ser gerenciado"
     )
     parser.add_argument(
@@ -52,7 +53,8 @@ def main():
         "wine": WineInstaller,
         "postman": PostmanInstaller,
         "nvim": NvimInstaller,
-        "nvchad": NvChadInstaller
+        "nvchad": NvChadInstaller,
+        "astrovim": AstroVimInstaller,
     }
 
     installer_class = installers.get(args.program)

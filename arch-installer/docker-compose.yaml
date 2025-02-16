@@ -1,0 +1,8 @@
+services:
+  archlinux:
+    build: .
+    container_name: archlinux
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./dist/arch-installer:/app/arch-installer
