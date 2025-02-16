@@ -6,9 +6,11 @@ import re
 import shutil
 
 from base_installer import BaseInstaller
+from config import PACKAGE_MANAGER
+
 from modules.nvim import NvimInstaller
 from modules.mise_language import LanguageInstaller
-from config import PACKAGE_MANAGER
+from modules.gdu import GduInstaller
 
 class AstroVimInstaller(BaseInstaller):
     INSTALL_DIR = "~/.config/nvim"
@@ -22,15 +24,14 @@ class AstroVimInstaller(BaseInstaller):
         super().__init__(*args, **kwargs)
         self.nvim_installer = NvimInstaller()
         self.mise_language_installer = LanguageInstaller()
+        self.gdu_installer = GduInstaller()
 
     def install(self):
         self.logger.info("Iniciando a instalação do AstroVim...")
         try:
             self.logger.info("Instalando dependências ...")
 
-            if not self.nvim_installer.is_installed():
-                self.nvim_installer.install()
-
+            self.nvim_installer.install()
             self.mise_language_installer.install("node", "22.14.0") # Lastest LTS
             self.mise_language_installer.install("python", "3.13.2") # Lastest stable version
 
@@ -39,8 +40,7 @@ class AstroVimInstaller(BaseInstaller):
                 check=True
             )
 
-            # Instalação do GDU (ferramenta de uso de disco)
-            self.install_gdu()
+            self.gdu_installer.install()
 
             # Realiza backup dos diretórios existentes do Neovim
             self.logger.info("Realizando backup dos diretórios existentes...")
@@ -57,7 +57,6 @@ class AstroVimInstaller(BaseInstaller):
                     os.rename(full_path, backup_path)
                     self.logger.info("Backup de '%s' realizado para '%s'.", full_path, backup_path)
 
-            # Clonagem do repositório do AstroVim
             full_install_dir = os.path.expanduser(self.INSTALL_DIR)
             self.logger.info("Clonando o repositório do AstroVim em %s...", full_install_dir)
             subprocess.run(
@@ -81,30 +80,19 @@ class AstroVimInstaller(BaseInstaller):
             self.uninstall()
             raise
 
-    def install_gdu(self):
-        self.logger.info("Instalando GDU (ferramenta para uso de disco)...")
-        try:
-            subprocess.run(
-                "curl -L https://github.com/dundee/gdu/releases/latest/download/gdu_linux_amd64.tgz | tar xz",
-                shell=True,
-                check=True
-            )
-
-            subprocess.run(["chmod", "+x", "gdu_linux_amd64"], check=True)
-
-            # Move o binário para /usr/bin (necessário permissões de superusuário)
-            subprocess.run(["sudo", "mv", "gdu_linux_amd64", "/usr/bin/gdu"], check=True)
-            self.logger.info("GDU instalado com sucesso.")
-        except subprocess.CalledProcessError as e:
-            self.logger.error("Erro ao instalar GDU: %s", e)
-            raise
-
     def update(self):
         self.logger.info("Para atualizar o AstroVim, abra o Neovim e execute o comando ':AstroUpdate'.")
 
     def uninstall(self):
         self.logger.info("Desinstalando AstroVim e removendo os diretórios de configuração...")
         try:
+            self.nvim_installer.uninstall()
+
+            self.mise_language_installer.uninstall("node", "22.14.0") # Lastest LTS
+            self.mise_language_installer.uninstall("python", "3.13.2") # Lastest stable version
+
+            self.gdu_installer.uninstall()
+
             dirs = [
                 self.INSTALL_DIR,
                 "~/.local/state/nvim",

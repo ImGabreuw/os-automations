@@ -6,6 +6,7 @@ import re
 
 from base_installer import BaseInstaller
 from config import PACKAGE_MANAGER
+from modules.nvim import NvimInstaller
 
 class NvChadInstaller(BaseInstaller):
     INSTALL_DIR = "~/.config/nvim"
@@ -14,8 +15,16 @@ class NvChadInstaller(BaseInstaller):
 
     DOWNLOAD_URL = "git@github.com:NvChad/starter.git"
 
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.nvim_installer = NvimInstaller()
+
     def install(self):
         self.logger.info("Instalando NvChad...")
+
+        self.nvim_installer.install()
+
         try:
             self.logger.info("Instalando dependências...")
             subprocess.run([PACKAGE_MANAGER, "-Sy", "--needed"] + self.DEPENDENCIES + ["--noconfirm"], check=True)
@@ -38,6 +47,9 @@ class NvChadInstaller(BaseInstaller):
 
     def uninstall(self):
         self.logger.info("Desinstalando NvChad...")
+
+        self.nvim_installer.uninstall()
+
         try:
             dirs = [self.INSTALL_DIR, "~/.local/state/nvim", "~/.local/share/nvim"]
 

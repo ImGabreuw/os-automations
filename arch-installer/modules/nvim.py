@@ -29,7 +29,12 @@ class NvimInstaller(BaseInstaller):
 
     def install(self):
         self.logger.info("Instalando Nvim...")
+
         try:
+            if self.is_installed():
+                self.logger.info("Nvim já está instalado.")
+                return
+
             subprocess.run(["curl", "-L", "-o", self.TEMP_TAR, self.DOWNLOAD_URL], check=True)
             
             if not os.path.exists(self.TEMP_TAR):
@@ -72,9 +77,14 @@ class NvimInstaller(BaseInstaller):
 
     def uninstall(self):
         self.logger.info("Desinstalando Nvim...")
+
+        if not self.is_installed():
+            self.logger.info("Nvim não está instalado.")
+            return
+
         try:
             if os.path.islink(self.SYMLINK_PATH) or os.path.exists(self.SYMLINK_PATH):
-                subprocess.run(["rm", "-f", self.SYMLINK_PATH], check=True)
+                subprocess.run(["sudo", "rm", "-f", self.SYMLINK_PATH], check=True)
                 self.logger.debug("Symlink %s removido.", self.SYMLINK_PATH)
             else:
                 self.logger.debug("Symlink %s não encontrado.", self.SYMLINK_PATH)
