@@ -29,7 +29,16 @@ class LanguageInstaller(BaseInstaller):
                 text=True,
                 check=True
             )
-            installed = f"{language}@{version}" in result.stdout
+
+            if version:
+                lines = result.stdout.splitlines()
+                for line in lines:
+                    if f"{language}" in line and f"{version}" in line:
+                        installed  = True
+                        break
+                    installed  = False
+            else:
+                installed = f"{language}" in result.stdout
         
             return installed
         except subprocess.CalledProcessError as e:
@@ -50,10 +59,6 @@ class LanguageInstaller(BaseInstaller):
 
         if not self.mise_installer.is_installed():
             self.mise_installer.install()
-
-        if self.is_installed(language, version):
-            self.logger.info("%s versão %s já está instalada.", language, version)
-            return
 
         self.logger.info("Instalando %s versão %s...", language, version)
         try:
@@ -76,17 +81,13 @@ class LanguageInstaller(BaseInstaller):
     def uninstall(self, language, version):
         """
         Desinstala a linguagem utilizando o 'mise uninstall'.
-        Exemplo de comando: mise uninstall --global node@22.14.0
+        Exemplo de comando: mise uninstall -- --global node@22.14.0
         """
         self.logger.info("Desinstalando %s versão %s...", language, version)
 
-        if not self.is_installed(language, version):
-            self.logger.info("%s versão %s não está instalada.", language, version)
-            return
-
         try:
             subprocess.run(
-                ["mise", "uninstall", "--global", f"{language}@{version}"],
+                ["mise", "uninstall", "--", "--global", f"{language}@{version}"],
                 check=True
             )
             self.logger.info("%s versão %s desinstalada com sucesso.", language, version)
