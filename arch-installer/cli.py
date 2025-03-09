@@ -35,10 +35,10 @@ def main():
         action="store_true",
         help="Habilitar modo debug (logs detalhados)"
     )
-    parser.add_argument(
-        "-v", "--version",
-        help="Versão do programa (quando aplicável, por exemplo, para Tomcat)"
-    )
+    # parser.add_argument(
+    #     "-v", "--version",
+    #     help="Versão do programa (quando aplicável, por exemplo, para Tomcat)"
+    # )
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -64,7 +64,7 @@ def main():
         print("Programa não encontrado.")
         return
 
-    installer = installer_class(debug=args.debug, version=args.version)
+    installer = installer_class(debug=args.debug)
 
     if args.action == "install":
         installer.install()
