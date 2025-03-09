@@ -10,6 +10,7 @@ from modules.postman import PostmanInstaller
 from modules.nvim import NvimInstaller
 from modules.nvim_nvchad import NvChadInstaller
 from modules.nvim_astrovim import AstroVimInstaller
+from modules.docker import DockerInstaller
 
 
 def main():
@@ -20,7 +21,7 @@ def main():
         "-p", "--program",
         required=True,
         choices=["chrome", "jetbrains", "filezilla",
-                 "tomcat", "wine", "postman", "nvim", "nvchad", "astrovim"],
+                 "tomcat", "wine", "postman", "nvim", "nvchad", "astrovim", "docker"],
         help="Programa a ser gerenciado"
     )
     parser.add_argument(
@@ -54,7 +55,8 @@ def main():
         "postman": PostmanInstaller,
         "nvim": NvimInstaller,
         "nvchad": NvChadInstaller,
-        "astrovim": AstroVimInstaller
+        "astrovim": AstroVimInstaller,
+        "docker": DockerInstaller
     }
 
     installer_class = installers.get(args.program)
