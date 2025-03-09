@@ -8,7 +8,7 @@ from base_installer import BaseInstaller
 from config import PACKAGE_MANAGER
 
 class JetbrainsInstaller(BaseInstaller):
-    INSTALL_DIR = "/opt/jetbrains-toolbox"
+    INSTALL_DIR = "~/Programs"
 
     """
     /usr/local/bin: contém executáveis instalados pelo administrador do sistema que não fazem parte do sistema operacional base.
@@ -25,17 +25,18 @@ class JetbrainsInstaller(BaseInstaller):
 
             subprocess.run(["wget", self.download_url, "-O", self.TEMP_TAR], check=True)
             
-            if not os.path.exists(self.INSTALL_DIR):
-                os.makedirs(self.INSTALL_DIR, exist_ok=True)
-                self.logger.debug("Diretório %s criado.", self.INSTALL_DIR)
+            full_install_dir = os.path.expanduser(self.INSTALL_DIR)
+            if not os.path.exists(full_install_dir):
+                os.makedirs(full_install_dir, exist_ok=True)
+                self.logger.info("Diretório %s criado.", self.INSTALL_DIR)
             
-            subprocess.run(["tar", "xzf", self.TEMP_TAR, "-C", self.INSTALL_DIR], check=True)
+            subprocess.run(["tar", "xzf", self.TEMP_TAR, "-C", full_install_dir], check=True)
             
             # Cria o link simbólico para o executável
             # Após a extração o executável estará em INSTALL_DIR/jetbrains-toolbox.
-            executable_path = os.path.join(self.INSTALL_DIR, "jetbrains-toolbox")
+            executable_path = os.path.join(full_install_dir, f"jetbrains-toolbox-{self.build_version}", "jetbrains-toolbox")
             if os.path.exists(executable_path):
-                subprocess.run(["ln", "-sf", executable_path, self.SYMLINK_PATH], check=True)
+                subprocess.run(["sudo", "ln", "-sf", executable_path, self.SYMLINK_PATH], check=True)
                 self.logger.debug("Symlink criado: %s -> %s", self.SYMLINK_PATH, executable_path)
             else:
                 self.logger.warning("Executável JetBrains Toolbox não encontrado em %s", executable_path)
@@ -46,6 +47,11 @@ class JetbrainsInstaller(BaseInstaller):
             self.logger.error("Erro ao instalar JetBrains Toolbox: %s", e)
             self.uninstall()
             raise
+        finally:
+            if os.path.exists(self.TEMP_TAR):
+                subprocess.run(["rm", self.TEMP_TAR], check=True)
+                self.logger.info("Arquivo temporário de instação removido.")
+
 
     def update(self):
         self.logger.info("Atualizando JetBrains Toolbox...")
@@ -57,20 +63,20 @@ class JetbrainsInstaller(BaseInstaller):
             self.logger.error("Erro ao atualizar JetBrains Toolbox: %s", e)
             raise
 
+
     def uninstall(self):
         self.logger.info("Desinstalando JetBrains Toolbox...")
         try:
             if os.path.islink(self.SYMLINK_PATH) or os.path.exists(self.SYMLINK_PATH):
-                subprocess.run(["rm", "-f", self.SYMLINK_PATH], check=True)
-                self.logger.debug("Symlink %s removido.", self.SYMLINK_PATH)
+                subprocess.run(["sudo", "rm", "-f", self.SYMLINK_PATH], check=True)
+                self.logger.info("Symlink %s removido.", self.SYMLINK_PATH)
             else:
-                self.logger.debug("Symlink %s não encontrado.", self.SYMLINK_PATH)
+                self.logger.info("Symlink %s não encontrado.", self.SYMLINK_PATH)
             
-            if os.path.exists(self.INSTALL_DIR):
-                subprocess.run(["rm", "-rf", self.INSTALL_DIR], check=True)
-                self.logger.debug("Diretório de instalação %s removido.", self.INSTALL_DIR)
-            else:
-                self.logger.info("JetBrains Toolbox não está instalado. Nenhuma ação necessária.")
+            jetbrains_dirs = os.path.join(self.INSTALL_DIR, "jetbrains-toolbox-*")
+            full_install_dir = os.path.expanduser(jetbrains_dirs)
+            subprocess.run(f"rm -rf {full_install_dir}", check=True, shell=True)
+            self.logger.info("Diretório de instalação %s removido.", jetbrains_dirs)
         except subprocess.CalledProcessError as e:
             self.logger.error("Erro ao desinstalar JetBrains Toolbox: %s", e)
             raise
@@ -94,8 +100,9 @@ class JetbrainsInstaller(BaseInstaller):
                 linux_data = data['TBA'][0]['downloads']['linux']
                 download_link = linux_data['link']
                 file_size = linux_data['size']
-
+                
                 self.download_url = download_link
+                self.build_version = data['TBA'][0]['build']
             else:
                 self.logger.warning("Nenhuma informação de release foi encontrada para o Linux.")
 

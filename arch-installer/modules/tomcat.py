@@ -5,6 +5,7 @@ from base_installer import BaseInstaller
 from config import PACKAGE_MANAGER
 
 class TomcatInstaller(BaseInstaller):
+    INSTALL_DIR = "~/Programs"
     AVAILABLE_VERSIONS = ["9.0.98", "10.1.34"]
 
     def install(self):
@@ -21,7 +22,7 @@ class TomcatInstaller(BaseInstaller):
             download_url = f"https://dlcdn.apache.org/tomcat/tomcat-{version[0]}/v{version}/bin/apache-tomcat-{version}.tar.gz"
 
             subprocess.run(["wget", download_url, "-O", f"/tmp/tomcat-{version}.tar.gz"], check=True)
-            subprocess.run(["tar", "xzf", f"/tmp/tomcat-{version}.tar.gz", "-C", "/opt"], check=True)
+            subprocess.run(["tar", "xzf", f"/tmp/tomcat-{version}.tar.gz", "-C", INSTALL_DIR], check=True)
 
             self.logger.info("Apache Tomcat versão %s instalado com sucesso em %s.", version, f"/opt/tomcat-{version}")
         except subprocess.CalledProcessError as e:
@@ -34,7 +35,7 @@ class TomcatInstaller(BaseInstaller):
 
     def uninstall(self):
         self.logger.info("Desinstalando Apache Tomcat...")
-        tomcat_dir = f"/opt/tomcat-{self.version}"
+        tomcat_dir = f"{INSTALL_DIR}/tomcat-{self.version}"
 
         if os.path.exists(tomcat_dir):
             try:
