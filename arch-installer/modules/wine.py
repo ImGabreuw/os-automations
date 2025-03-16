@@ -4,7 +4,7 @@ from base_installer import BaseInstaller
 from config import PACKAGE_MANAGER
 
 class WineInstaller(BaseInstaller):
-    DEPENDENCIES = ["wine", "winetricks", "wine-mono", "wine_gecko"]
+    DEPENDENCIES = ["wine", "winetricks", "wine-mono", "wine_gecko", "bottles"]
 
     def install(self):
         self.logger.info("Instalando Wine e dependências...")
